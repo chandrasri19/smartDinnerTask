@@ -14,12 +14,13 @@ import { NavLink } from 'react-router-dom';
 
 
 const { TabPane } = Tabs;
+let keyvalue=null;
 
 class MenuItemOrder extends React.Component { 
 
     componentDidMount() {
       console.log("did:")
-      console.log(this.props.getFetchedData)
+      
       this.props.menuDetail();
     }  
     constructor(props){
@@ -31,39 +32,29 @@ class MenuItemOrder extends React.Component {
       {tabname:"Completed",key:4}
      ]}
     } 
-
    render(){    
     function callback(key) {
       console.log(key);
     }
-    return (
-      
-      <div style={{marginTop:"25px",textAlign:"center",justifyContent:"center",}}>
-        <Tabs onChange={callback} type="card">
-          {this.renderTab()}  
-        </Tabs>
-      </div>     
+    return (      
+      <Tabs onChange={callback} type="card">
+        {this.state.TabHead.map(item=>{
+            return (
+              <TabPane tab={item.tabname} key={item.key}>
+                 <div style={{justifyContent:"center",alignItems:"center"}}> Your order is {item.tabname}</div>
+              </TabPane>
+            )}
+        )}      
+    </Tabs>
       )
     }
 
-      orderedid = () => {
-            return this.props.getFetchedData?.orders.map( orderedList => {
-          return orderedList.stage_id
-        })
-      }
-      renderTab = () => {
-        if(this.state.TabHead.length==0)return null;
-        return this.state.TabHead.map((item)=>{
-          return (
-            <NavLink to={`/order/${item.tabname}`}>
-            <TabPane tab={item.tabname} key={item.key}>
-               Your Order is  {item.tabname}
-            </TabPane>
-            </NavLink>
-            )
-          })
-      }
-   
+      // orderedid = () => {
+      //       return this.props.getFetchedData?.orders.map( orderedList => {
+      //     return orderedList.stage_id
+      //   })
+      // }
+
 }
 const mapStateToProps = (state) =>{
     return createStructuredSelector({ getFetchedData: selectors.MenuFetchedData()});
@@ -79,27 +70,3 @@ const withReducer = injectReducer({ key: "RestAllDetails", reducer: reducer });
 const withSaga = injectSaga({ key: "Userdetails", saga: saga });
 const withConnect = connect(mapStateToProps, mapDispatch);
 export default compose(withReducer, withSaga, withConnect)(MenuItemOrder);
-
-
-// import { Tabs } from 'antd';
-
-// const { TabPane } = Tabs;
-
-// function callback(key) {
-//   console.log(key);
-// }
-
-// ReactDOM.render(
-//   <Tabs onChange={callback} type="card">
-//     <TabPane tab="Tab 1" key="1">
-//       Content of Tab Pane 1
-//     </TabPane>
-//     <TabPane tab="Tab 2" key="2">
-//       Content of Tab Pane 2
-//     </TabPane>
-//     <TabPane tab="Tab 3" key="3">
-//       Content of Tab Pane 3
-//     </TabPane>
-//   </Tabs>,
-//   mountNode,
-// );
