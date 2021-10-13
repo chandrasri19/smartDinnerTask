@@ -18,19 +18,13 @@ function App() {
 export default App;
 
 
-function Routes (props) { 
+function Routes () { 
  return(
+  <Router>
   <Switch>
-      <Route render={props => (
-        <Dashboard {...props} />
-        )}
-        path="/"
-      />,
-      <Route render={props => (
-        <Orderdetail {...props} />
-        )}
-        path="/order/:name"
-      />
-  </ Switch>  
- )
+    <Route exact path="/" component={Orderdetail} />
+    <Route path="/dashboard" component={Dashboard} />
+  </Switch>
+</Router>
+)
 }
