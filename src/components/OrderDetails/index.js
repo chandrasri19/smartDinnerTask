@@ -20,7 +20,7 @@ class MenuItemOrder extends React.Component {
 
     componentDidMount() {
       console.log("did:")
-      
+      console.log(this.orderedid())
       this.props.menuDetail();
     }  
     constructor(props){
@@ -44,29 +44,45 @@ class MenuItemOrder extends React.Component {
                  <div style={{justifyContent:"center",alignItems:"center"}}> Your order is {item.tabname}</div>
               </TabPane>
             )}
-        )}      
+        )} 
+     {this.orderedid()}
     </Tabs>
       )
     }
 
-      // orderedid = () => {
-      //       return this.props.getFetchedData?.orders.map( orderedList => {
-      //     return orderedList.stage_id
-      //   })
-      // }
+      orderedid = () => {
+            return this.props.getFetchedData?.orders.map( orderedList => {
+          return orderedList.stage_id
+        })
+      }
 
+x
+      // renderTab = () => {
+      //   if(this.state.TabHead.length==0)return null;
+      //   return this.state.TabHead.map((item)=>{
+      //     keyvalue=item.key;
+      //     return (
+      //       <NavLink to={`/order/${item.tabname}`} key={item.key}>
+      //       <TabPane tab={item.tabname} key={item.key}>
+      //          Your Order is  {item.tabname}
+      //       </TabPane>
+      //       </NavLink>
+      //       )
+      //     })
+      // }
+   
 }
 const mapStateToProps = (state) =>{
     return createStructuredSelector({ getFetchedData: selectors.MenuFetchedData()});
    
 }
-const mapDispatch = (dispatch) =>{
+const mapDispatch = (dispatch) =>{ 
     return{ 
       menuDetail:() => dispatch(actions.GetRestMenu()),   
     }
 }
 
 const withReducer = injectReducer({ key: "RestAllDetails", reducer: reducer });
-const withSaga = injectSaga({ key: "Userdetails", saga: saga });
+const withSaga = injectSaga({ key: "RestAllDetails", saga: saga });
 const withConnect = connect(mapStateToProps, mapDispatch);
 export default compose(withReducer, withSaga, withConnect)(MenuItemOrder);
