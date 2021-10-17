@@ -1,6 +1,6 @@
 import './App.css';
 import Dashboard from './components/Dashboard';
-import Orderdetail from './components/OrderDetails/index';
+import Orderdetail from './components/OrderDetails';
 import { Provider } from "react-redux";
 import store from './Store/index';
 import {

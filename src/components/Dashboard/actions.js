@@ -14,6 +14,5 @@ export function GetRestDetail(allRestData) {
   return { type: GetAllRestData.ALL_REST_DETAIL, payload: { allRestData } };
 }
 export function GetRestMenu(menuItem) {
-  console.log("action")
   return { type: GetAllRestData.ALL_REST_MENU_ITEM, payload: { menuItem } };
 }

@@ -7,7 +7,7 @@ import { compose } from "redux";
 import * as actions from './actions'
 import * as selectors from './selectors'
 import { createStructuredSelector } from "reselect";
-import {NavLink,Link, Redirect} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 
 
@@ -15,7 +15,7 @@ class Allusers extends React.Component {
 
     componentDidMount() {
       console.log("did:")
-      console.log(this.props.getFetchedData?.restaurantEmployee)
+      console.log(this.props.getFetchedData.message)
       this.props.restDetail();
 
     }
@@ -42,6 +42,6 @@ const mapDispatch = (dispatch) =>{
 }
 
 const withReducer = injectReducer({ key: "RestAllDetails", reducer: reducer });
-const withSaga = injectSaga({ key: "Userdetails", saga: saga });
+const withSaga = injectSaga({ key: "RestAllDetails", saga: saga });
 const withConnect = connect(mapStateToProps, mapDispatch);
 export default compose(withReducer, withSaga, withConnect)(Allusers);

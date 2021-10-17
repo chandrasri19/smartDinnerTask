@@ -7,73 +7,95 @@ import { compose } from "redux";
 import * as actions from '../Dashboard/actions'
 import * as selectors from '../Dashboard/selectors';
 import { createStructuredSelector } from "reselect";
-import { Tabs } from 'antd';
 import 'antd/dist/antd.css';
-import { NavLink } from 'react-router-dom';
+import { select } from 'redux-saga/effects';
+import './styles.css';
 
 
 
-const { TabPane } = Tabs;
-let keyvalue=null;
 
 class MenuItemOrder extends React.Component { 
 
     componentDidMount() {
-      console.log("did:")
-      console.log(this.orderedid())
-      this.props.menuDetail();
+      this.props.menuDetail();      
     }  
     constructor(props){
       super(props);
     this.state = {TabHead:[
-      {tabname:"New Orders",key:1 },
-      {tabname:"Preparing",key:2 },
-      {tabname:"Out for Delivery",key:3},
-      {tabname:"Completed",key:4}
-     ]}
+      {tabname:"New Orders",key:1,id:1},
+      {tabname:"Preparing",key:2 ,id:2 },
+      {tabname:"Out for Delivery",key:3,id:3 },
+      {tabname:"Completed",key:4,id:4 }
+     ],
+     clickedvalue:"",
+     clickedvalueId:"",
+     showDetail:""    
+    }
+    
     } 
-   render(){    
-    function callback(key) {
-      console.log(key);
-    }
-    return (      
-      <Tabs onChange={callback} type="card">
-        {this.state.TabHead.map(item=>{
-            return (
-              <TabPane tab={item.tabname} key={item.key}>
-                 <div style={{justifyContent:"center",alignItems:"center"}}> Your order is {item.tabname}</div>
-              </TabPane>
-            )}
-        )} 
-     {this.orderedid()}
-    </Tabs>
+    handleId = (e) => {     
+      console.log(e.target.id)
+     this.setState({clickedvalue:e.target.id,clickedvalueId:e.target.name,showDetail:true})
+   }
+   Display=(arr)=>{
+     if(arr.length>0){;
+    return arr.map(item=>{
+      return (               
+       <tr key={item.id}>
+       <td>{item.stage_id}</td>
+       <td>{item.delivery_charge}</td>
+       <td>{item.gst}</td>
+       <td>{item.total_price}</td>
+       </tr>
       )
+     })
     }
-
-      orderedid = () => {
-            return this.props.getFetchedData?.orders.map( orderedList => {
-          return orderedList.stage_id
-        })
-      }
-
-x
-      // renderTab = () => {
-      //   if(this.state.TabHead.length==0)return null;
-      //   return this.state.TabHead.map((item)=>{
-      //     keyvalue=item.key;
-      //     return (
-      //       <NavLink to={`/order/${item.tabname}`} key={item.key}>
-      //       <TabPane tab={item.tabname} key={item.key}>
-      //          Your Order is  {item.tabname}
-      //       </TabPane>
-      //       </NavLink>
-      //       )
-      //     })
-      // }
+   }
+   orderStatus=(value)=>{
+    if(value=="Preparing"){
+     return this.Display(this.props.getPreparingData);
+    }else if(value=="Completed"){
+     return this.Display(this.props.getCompleted);
+    }else if(value=="Out for Delivery"){
+      return this.Display(this.props.getOutForDelivery);
+     }else if(value=="New Orders"){
+      return this.Display(this.props.getNewOrderData);
+     }
+   }
+   render(){    
+    return (      
+     <>
+      <div>
+        {
+           this.state.TabHead.map((item)=>{
+            return (
+             <button id={item.tabname} name={item.id} onClick={(e)=>this.handleId(e)}  key={item.key}>{item.tabname}</button>
+             )
+           })
+        }
+      </div>
+        {this.state.showDetail&&          
+            <>{
+                this.orderStatus(this.state.clickedvalue)                 
+              
+        }</>
+         || <div>Not Show </div>}
+     
+     </>
+      );
+    }
+   
+     
    
 }
 const mapStateToProps = (state) =>{
-    return createStructuredSelector({ getFetchedData: selectors.MenuFetchedData()});
+    return createStructuredSelector({ 
+      // getFetchedData: selectors.MenuFetchedData(),
+      getNewOrderData: selectors.NewOrder(),
+      getPreparingData:selectors.Preparing(),
+      getOutForDelivery:selectors.OutforDelivery(),
+      getCompleted:selectors.Completed()
+    });
    
 }
 const mapDispatch = (dispatch) =>{ 

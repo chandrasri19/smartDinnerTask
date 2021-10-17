@@ -1,3 +1,3 @@
-import { fromJS } from "immutable";
+import { fromJS,List } from "immutable";
 
-export const InitialState = fromJS({ data: "",getsingleUser:{} });
+export const InitialState = fromJS({ data: "",getsingleUser:{} ,RestMenuItemSuccess:List([])});
